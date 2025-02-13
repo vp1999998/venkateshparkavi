@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital@0;1&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffe6e6, #ffb3b3);
+            min-height: 100vh;
+            font-family: 'Playfair Display', serif;
+            color: #4a4a4a;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            padding: 1rem;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: scaleIn 1.5s ease-out;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.1rem;
+            color: #e91e63;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .tab.active {
+            background: #e91e63;
+            color: white;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .letter {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            animation: slideUp 1.5s ease-out;
+            line-height: 1.8;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+        }
+
+        .timeline-event {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 3px solid #e91e63;
+            animation: slideLeft 1s ease-out;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            aspect-ratio: 3/4;
+            background: #ffd9e8;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(233, 30, 99, 0.2);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        .kavithai {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 2;
+        }
+
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUpAndRotate 4s linear infinite;
+            opacity: 0.6;
+        }
+
+        .signature {
+            margin-top: 2rem;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            text-align: right;
+            color: #e91e63;
+        }
+
+        .date {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes floatUpAndRotate {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideLeft {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .tab {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+            
+            .letter, .timeline, .gallery, .kavithai {
+                padding: 1rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .gallery-item {
+                aspect-ratio: 3/4;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Happy First Valentine's Day</h1>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-section="welcome">Welcome</button>
+            <button class="tab" data-section="letter">A Letter from the Heart</button>
+            <button class="tab" data-section="timeline">Our Journey</button>
+            <button class="tab" data-section="gallery">Memories</button>
+            <button class="tab" data-section="kavithai">Shadow of My Heart</button>
+        </div>
+
+        <div id="welcome" class="content-section active">
+            <div class="letter">
+                <h2 style="text-align: center; font-family: 'Dancing Script', cursive; color: #e91e63;">
+                    Eternal love
+                </h2>
+                <p style="text-align: center; font-size: 1.2rem;">
+                    Celebrating our first Valentine's Day together!<br>
+                    💕 Parkavi & Venkatesh 💕
+                </p>
+                <div style="text-align: center; font-size: 3rem; margin: 2rem 0;">
+                    💝
+                </div>
+            </div>
+        </div>
+
+        <div id="letter" class="content-section">
+            <div class="letter">
+                <p>My Dearest Venkatesh,</p>
+                
+                <p>As I sit down to write this letter, my heart is overflowing with love and gratitude for you. It's hard to believe that it was just a short while ago, on January 26, 2024, that our paths first crossed. I remember that day vividly—the spark in your eyes, the warmth of your smile, and the way my heart simply knew that something extraordinary was about to unfold.</p>
+                
+                <p>When we got engaged on February 9, 2025, I felt an overwhelming rush of happiness and joy. It was a moment filled with promise, sealing our commitment to one another. Every day since then has been a beautiful testament to the love we share.</p>
+                
+                <div class="signature">With all my love,<br>Parkavi</div>
+                <div class="date">February 14, 2025</div>
+            </div>
+        </div>
+
+        <div id="timeline" class="content-section">
+            <div class="timeline">
+                <div class="timeline-event">
+                    <h3>January 26, 2024</h3>
+                    <p>The day our paths first crossed - a moment that changed our lives forever.</p>
+                </div>
+                <div class="timeline-event">
+                    <h3>Second meet</h3>
+                    <p>our hearts recognized a familiar warmth, and love quietly began to bloom.</p>
+                </div>
+                <div class="timeline-event">
+                    <h3>February 9, 2025</h3>
+                    <p>Our engagement day - when we promised our forever to each other.</p>
+                </div>
+                <div class="timeline-event">
+                    <h3>February 14, 2025</h3>
+                    <p>Our first Valentine's Day as an engaged couple! ❤️</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gallery" class="content-section">
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="img1.jpg" alt="Our First Meeting" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="img2.jpg" alt="Special Moments Together" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="img3.jpg" alt="Engagement Day" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="img4.jpg" alt="Valentine's Day" loading="lazy">
+                </div>
+            </div>
+        </div>
+
+        <div id="kavithai" class="content-section">
+            <div class="kavithai">
+                <p>
+                    என் அன்பு மாமாவிற்காக💝!<br><br>
+                    உன் கண்களில் தெரியும் காதல் வானவில் 🌈<br>
+                    என் இதயத்தில் நிறைந்த ஆனந்த தேன் 🍯<br>
+                    நம் பாதையில் மலரும் மலர்கள் போல் 🌸<br>
+                    வாழ்க்கையின் அழகிய தருணங்கள் ✨<br>
+                    நீ என் கனவுகளின் இளவரசன் 👑<br>
+                    நான் உன் இதயத்தின் இளவரசி 👸<br>
+                    நம் காதல் கதை என்றும் தொடரும் 💫<br>
+                    நம் அன்பு நித்தியமாய் நிலைக்கும் ❤️<br>
+                    உன் புன்னகையில் மலரும் வசந்தம் 🌺<br>
+                    என் நெஞ்சில் பொங்கும் இன்பம் 💝<br>
+                    நம் கைகள் கோர்த்த பயணம் 🤝<br>
+                    என்றென்றும் இனிமையாய் தொடரும் ⭐<br>
+                    💕 பார்க்கவி  💕
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop autoplay>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('bgMusic');
+            
+            audio.play().catch(function(error) {
+                console.log("Audio autoplay failed:", error);
+            });
+
+            document.body.addEventListener('click', function() {
+                audio.play().catch(function(error) {
+                    console.log("Audio play failed:", error);
+                });
+            }, { once: true });
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId, this);
+                });
+            });
+
+            function showSection(sectionId, clickedTab) {
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                if (clickedTab) {
+                    clickedTab.classList.add('active');
+                }
+            }
+
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'floating-heart';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                
+                const heartsContainer = document.getElementById('heartsContainer');
+                if (heartsContainer) {
+                    heartsContainer.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 4000);
+                }
+            }
+
+            setInterval(createHeart, 300);
+
+            for(let i = 0; i < 10; i++) {
+                setTimeout(createHeart, i * 300);
+            }
+
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('mouseover', () => {
+                    item.style.transform = `scale(1.1) rotate(${Math.random() * 20 - 10}deg)`;
+                });
+                
+                item.addEventListener('mouseout', () => {
+                    item.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
